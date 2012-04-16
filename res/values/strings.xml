@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, SrzAndroidToolActivity!</string>
+    <string name="app_name">SrzAndroidTool</string>
+    <string name="key_load_image_preference">key_load_image_preference</string>
+    <string name="key_auto_check_update_nonwifi_preference">key_auto_check_update_nonwifi_preference</string>
+    <string name="nonetworklocation">没有定位设备，或定位设备未开启</string>
+    <string name="loading">Loading...</string>
+    <string name="addmore">Add More</string>
+
+
+    <string name="pull_to_refresh_pull_label">Pull to update...</string>
+    <string name="pull_to_refresh_release_label">Release to update...</string>
+    <string name="pull_to_refresh_refreshing_label">Updating...</string>
+    <string name="pull_to_refresh_tap_label">Tap to update...</string>
+
+</resources>
