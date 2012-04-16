@@ -10,5 +10,5 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface PaginationLoaderService {
-    List load(int page, int count) throws NoSuchPageException;
+    List load(int page) throws NoSuchPageException;
 }

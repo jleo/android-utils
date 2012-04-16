@@ -17,7 +17,6 @@ public class PullToRefreshListView extends PullToRefreshBase<ListView> {
 		super(context, attrs);
 	}
 
-
 	@Override
 	protected final ListView createAdapterView(Context context, AttributeSet attrs) {
 		ListView lv = new ListView(context, attrs);

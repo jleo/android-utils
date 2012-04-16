@@ -41,7 +41,7 @@ public abstract class PaginationLoaderAdapter extends AutoLoadArrayAdapter {
     }
 
     public List load() throws NoSuchPageException {
-            return loader.load(++page, pageCount);
+            return loader.load(++page);
     }
 
     public void reset() {
