@@ -1,5 +1,7 @@
 package com.srz.androidtools.util;
  
+ 
+
 import android.app.Activity;
 import android.content.Context;
 import android.location.Criteria;
@@ -9,22 +11,37 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
+ 
 import com.srz.androidtools.R;
 
 /**
  * @author shang
- * 
+ * sample1： 
+ *     locationTools = new LocationTools(MapActivityBase.this, new Handler() {
+                        public void handleMessage(Message msg) {  
+                            Location location = locationTools.getNowLocation() ;
+                            int lat = (int) (location.getLatitude() * 1E6);
+                            int lng = (int) (location.getLongitude() * 1E6); 
+                            locationTools.stopListen();
+                            ...
+                        }
+                    }); 
+      locationTools.startListen() ;
+      
+ *     sample2:
+ *     Location location = LocationTools.getLastKnownLocation((LocationManager)getSystemService(Context.LOCATION_SERVICE););
  */
+
+
 public class LocationTools {
+    private static final int GPS_WAIT_TIME = 20000;
     private Activity activity;
-
     private Handler handler;
-
     private LocationManager locationManager = null;
-
     private LocationProvider locationProvider;
-
     private boolean islocationListenerSetup = false;
 
     public LocationTools(Activity activity, Handler handler) {
@@ -57,8 +74,6 @@ public class LocationTools {
     private LocationProvider checkProviders() {
 //        if(isUsesetCriteriaChoseProvider &&  this.locationProvider != null)
 //             return this.locationProvider;
-        
-        
         LocationProvider _locationProvider = null;
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             _locationProvider = locationManager
@@ -72,33 +87,9 @@ public class LocationTools {
         return _locationProvider;
 
     }
-    //暂时不用
-    private boolean isUsesetCriteriaChoseProvider = false;
-    public void  setCriteriaChoseProvider(int accuracy, boolean altitudeRequired, boolean bearingRequired,
-             boolean costAllowed, int powerlevel ) {
-        Criteria criteria = new Criteria();
-//        criteria.setAccuracy(Criteria.ACCURACY_FINE);// 高精度
-//        criteria.setAltitudeRequired(false);// 不要求海拔
-//        criteria.setBearingRequired(false);// 不要求方位
-//        criteria.setCostAllowed(true); 
-//        criteria.setPowerRequirement(Criteria.POWER_LOW);// 低功耗
-        criteria.setAccuracy(accuracy); 
-        criteria.setAltitudeRequired(altitudeRequired); 
-        criteria.setBearingRequired(bearingRequired);
-        criteria.setCostAllowed(costAllowed); 
-        criteria.setPowerRequirement(powerlevel);
-       
-        String bestproviderString = locationManager.getBestProvider(criteria, true);
-        if (bestproviderString == null) {
-            isUsesetCriteriaChoseProvider = false;
-            return;
-        }
-        this.locationProvider = locationManager.getProvider(bestproviderString); 
-        isUsesetCriteriaChoseProvider = true;
-    }
+ 
 
     public Location getNowLocation() {
-
         if (!isAnyProviderEnabled())
             return null;
 
@@ -117,18 +108,15 @@ public class LocationTools {
         @Override
         public void onLocationChanged(Location location) {
             updateWithNewLocation(location);
-
         }
 
         @Override
         public void onProviderDisabled(String provider) {
             updateWithNewLocation(null);
-
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-
         }
 
         @Override
@@ -167,5 +155,53 @@ public class LocationTools {
         }
 
     }
-
+    
+    //简单得到最后定位
+    public static Location getLastKnownLocation(final LocationManager pLocationManager) {
+        if (pLocationManager == null) {
+            return null;
+        }
+        final Location gpsLocation =
+            pLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        final Location networkLocation =
+            pLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (gpsLocation == null) {
+            return networkLocation;
+        } else if (networkLocation == null) {
+            return gpsLocation;
+        } else {
+            // both are non-null - use the most recent
+            if (networkLocation.getTime() > gpsLocation.getTime() + GPS_WAIT_TIME) {
+                return networkLocation;
+            } else {
+                return gpsLocation;
+            }
+        }
+    }
+    
+    
+    //暂时不用
+    private boolean isUsesetCriteriaChoseProvider = false;
+    public void  setCriteriaChoseProvider(int accuracy, boolean altitudeRequired, boolean bearingRequired,
+             boolean costAllowed, int powerlevel ) {
+        Criteria criteria = new Criteria();
+//        criteria.setAccuracy(Criteria.ACCURACY_FINE);// 高精度
+//        criteria.setAltitudeRequired(false);// 不要求海拔
+//        criteria.setBearingRequired(false);// 不要求方位
+//        criteria.setCostAllowed(true); 
+//        criteria.setPowerRequirement(Criteria.POWER_LOW);// 低功耗
+        criteria.setAccuracy(accuracy); 
+        criteria.setAltitudeRequired(altitudeRequired); 
+        criteria.setBearingRequired(bearingRequired);
+        criteria.setCostAllowed(costAllowed); 
+        criteria.setPowerRequirement(powerlevel);
+       
+        String bestproviderString = locationManager.getBestProvider(criteria, true);
+        if (bestproviderString == null) {
+            isUsesetCriteriaChoseProvider = false;
+            return;
+        }
+        this.locationProvider = locationManager.getProvider(bestproviderString); 
+        isUsesetCriteriaChoseProvider = true;
+    }
 }
