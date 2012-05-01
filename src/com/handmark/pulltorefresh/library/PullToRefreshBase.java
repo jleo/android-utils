@@ -342,8 +342,8 @@ public abstract class PullToRefreshBase<T extends AbsListView> extends LinearLay
         if (a.hasValue(R.styleable.PullToRefresh_headerTextColor)) {
             headerText.setTextColor(a.getColor(R.styleable.PullToRefresh_headerTextColor, Color.BLACK));
         }
-        if (a.hasValue(R.styleable.PullToRefresh_headerBackground)) {
-            this.setBackgroundResource(a.getResourceId(R.styleable.PullToRefresh_headerBackground, Color.WHITE));
+        if (a.hasValue(R.styleable.PullToRefresh_headerBackgroundptr)) {
+            this.setBackgroundResource(a.getResourceId(R.styleable.PullToRefresh_headerBackgroundptr, Color.WHITE));
         }
         if (a.hasValue(R.styleable.PullToRefresh_adapterViewBackground)) {
             adapterView.setBackgroundResource(a.getResourceId(R.styleable.PullToRefresh_adapterViewBackground,
