@@ -158,24 +158,21 @@ public class LocationTools {
     
     //简单得到最后定位
     public static Location getLastKnownLocation(final LocationManager pLocationManager) {
-        if (pLocationManager == null) {
+        if (pLocationManager == null)  
             return null;
-        }
         final Location gpsLocation =
             pLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         final Location networkLocation =
             pLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        if (gpsLocation == null) {
+        if (gpsLocation == null) 
             return networkLocation;
-        } else if (networkLocation == null) {
+        else if (networkLocation == null) 
             return gpsLocation;
-        } else {
-            // both are non-null - use the most recent
-            if (networkLocation.getTime() > gpsLocation.getTime() + GPS_WAIT_TIME) {
+        else {
+            if (networkLocation.getTime() > gpsLocation.getTime() + GPS_WAIT_TIME) 
                 return networkLocation;
-            } else {
+            else 
                 return gpsLocation;
-            }
         }
     }
     
