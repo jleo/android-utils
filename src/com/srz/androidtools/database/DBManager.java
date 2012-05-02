@@ -40,7 +40,6 @@ public class DBManager {
     public static void initialize(DBInitializedListener dbInitializedListener, Context context, int resourceID, String databaseName) {
         try {
             initialize(databaseName, context,resourceID);
-//            initialize(DB_NAME_MAP,context);
         } catch (Exception e) {
             dbInitializedListener.onFailedToInitialzed();
             return;
