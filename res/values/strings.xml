@@ -15,4 +15,7 @@
     <string name="pull_to_refresh_refreshing_label">Updating...</string>
     <string name="pull_to_refresh_tap_label">Tap to update...</string>
 
+    <string name="firsttime">正在为第一次使用做准备</string>
+    <string name="initializefail">启动失败,正自动退出</string>
+
 </resources>
