@@ -1,4 +1,4 @@
-package com.srz.androidtools.util;
+package com.srz.androidtools.database;
 
 import android.database.Cursor;
 

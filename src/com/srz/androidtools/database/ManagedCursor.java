@@ -1,15 +1,7 @@
-package com.srz.androidtools.util;
+package com.srz.androidtools.database;
 
 import android.database.Cursor;
-import com.srz.androidtools.database.EachCursor;
 
-/**
- * Created by IntelliJ IDEA.
- * User: ITS
- * Date: 11-8-11
- * Time: 下午1:55
- * To change this template use File | Settings | File Templates.
- */
 public class ManagedCursor {
     private Cursor cursor;
 
