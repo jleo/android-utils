@@ -16,7 +16,7 @@ public class DBManager {
     private static DBManager dbManager;
 
     public static final String DB_INFO_PATH = "/data"
-            + Environment.getDataDirectory().getAbsolutePath() + "/";
+            + Environment.getDataDirectory().getAbsolutePath() +"/";
 
 
     public static synchronized SQLiteDatabase getDatabase(String databaseName,Context context) {
@@ -34,7 +34,7 @@ public class DBManager {
     }
 
     private static String getFilePath(Context context, String databaseName) {
-        return DB_INFO_PATH +context.getPackageName()+ "/" + databaseName;
+        return DB_INFO_PATH +context.getPackageName()+ "/databases/" + databaseName;
     }
 
     public static void initialize(DBInitializedListener dbInitializedListener, Context context, int resourceID, String databaseName) {
