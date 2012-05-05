@@ -9,4 +9,44 @@
             <flag name="pullUpFromBottom" value="0x2"/>
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="ViewPagerTabs">
+
+        <attr
+                name="backgroundColor"
+                format="color"/>
+        <attr
+                name="backgroundColorPressed"
+                format="color"/>
+        <attr
+                name="textColor2"
+                format="color"/>
+        <attr
+                name="textColorCenter"
+                format="color"/>
+        <attr
+                name="lineColorCenter"
+                format="color"/>
+        <attr
+                name="lineHeight"
+                format="dimension"/>
+        <attr
+                name="tabPaddingLeft"
+                format="dimension"/>
+        <attr
+                name="tabPaddingTop"
+                format="dimension"/>
+        <attr
+                name="tabPaddingRight"
+                format="dimension"/>
+        <attr
+                name="tabPaddingBottom"
+                format="dimension"/>
+        <attr
+                name="textSize2"
+                format="dimension"/>
+        <attr
+                name="outsideOffset"
+                format="dimension"/>
+    </declare-styleable>
 </resources>
