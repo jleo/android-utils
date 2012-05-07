@@ -8,11 +8,12 @@ public class ResTools {
     }
 
     public static int getDrawable(String name, Context context) {
-        try {
-            return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        } catch (Exception e) {
-            return  context.getResources().getIdentifier("unknown", "drawable", context.getPackageName());
+        int drawable = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        if(drawable == 0){//not found
+            return context.getResources().getIdentifier("unknown", "drawable", context.getPackageName());
+
         }
+        return drawable;
     }
 
 }
