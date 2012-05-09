@@ -34,17 +34,8 @@ public class TimeTools {
     
     //调整时间用,把输入时候错误时区保存的时间修改
     public static Date fixTimeWithTimezone(Date date) {
-        //  System.out.println(timeString);
-          SimpleDateFormat df = new SimpleDateFormat(TIMEFORMATSTRING);
-          df.setTimeZone(TimeZone.getDefault());
-          String timeString = df.format(date);
-          df.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-          try {
-            Date rdate = df.parse(timeString);
-            return rdate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+           date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+           return date;
+ 
       }
 }
