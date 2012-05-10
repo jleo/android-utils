@@ -4,7 +4,14 @@ import android.content.Context;
 
 public class ResTools {
     public static String getString(String name, Context context) {
-        return context.getResources().getString(context.getResources().getIdentifier(name, "string", context.getPackageName()));
+        try {
+            return context.getResources().getString(context.getResources().getIdentifier(name, "string", context.getPackageName()));
+        }catch(Exception e) {
+            e.printStackTrace();
+            return null;
+            
+        }
+        
     }
 
     public static int getDrawable(String name, Context context) {
