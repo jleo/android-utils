@@ -1,9 +1,7 @@
 package com.srz.androidtools.util;
 
 import android.app.Activity;
-import android.graphics.Rect;
 import android.util.DisplayMetrics;
-import android.view.Window;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +17,7 @@ public class DeviceInfo {
     private int height;
     private static DeviceInfo deviceInfo;
     private float density;
+    private int statusBarHeight;
 
     private DeviceInfo() {
 
@@ -26,15 +25,26 @@ public class DeviceInfo {
 
     public static synchronized DeviceInfo getInstance(Activity activity) {
         if (deviceInfo == null) {
-            Rect rect = new Rect();
-            Window window = activity.getWindow();
-            window.getDecorView().getWindowVisibleDisplayFrame(rect);
             DisplayMetrics dm = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int statusBarHeight = 0;
+            switch (dm.densityDpi) {
+                case DisplayMetrics.DENSITY_HIGH:
+                    statusBarHeight = 48;
+                    break;
+                case DisplayMetrics.DENSITY_MEDIUM:
+                    statusBarHeight = 32;
+                    break;
+                case DisplayMetrics.DENSITY_LOW:
+                    statusBarHeight = 24;
+                    break;
+                default:
 
+            }
             deviceInfo = new DeviceInfo();
-            deviceInfo.setDisplayHeight((activity.getWindowManager().getDefaultDisplay().getHeight()) * 5 / 6);
-            deviceInfo.setDisplayWidth((activity.getWindowManager().getDefaultDisplay().getWidth()) - 20);
+            deviceInfo.setDisplayHeight((int) ((activity.getWindowManager().getDefaultDisplay().getHeight()) - statusBarHeight*dm.density));
+            deviceInfo.setDisplayWidth((activity.getWindowManager().getDefaultDisplay().getWidth()));
+            deviceInfo.setStatusBarHeight(statusBarHeight);
             deviceInfo.setWidth(activity.getWindowManager().getDefaultDisplay().getWidth());
             deviceInfo.setHeight(activity.getWindowManager().getDefaultDisplay().getHeight());
             deviceInfo.setDensityScale(dm.density);
@@ -43,12 +53,22 @@ public class DeviceInfo {
 
     }
 
+
+
+    private void setStatusBarHeight(int contentHeight) {
+        this.statusBarHeight = contentHeight;
+    }
+
     private void setDensityScale(float density) {
         this.density = density;
     }
 
     public float getDensity() {
         return density;
+    }
+
+    public int getStatusBarHeight() {
+        return statusBarHeight;
     }
 
     public int getDisplayHeight() {
@@ -91,7 +111,6 @@ public class DeviceInfo {
     public boolean isSmallScreen() {
         return height == 320;
     }
-
 
 
     @Override
