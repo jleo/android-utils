@@ -14,7 +14,8 @@ public class AlarmSender {
 
     private Activity activity;
     private static Toast toast;
-
+    public static int layoutResid = R.layout.toast;
+ 
     public AlarmSender(Activity activity) {
         this.activity = activity;
     }
@@ -26,7 +27,7 @@ public class AlarmSender {
 
     public static void sendInstantMessage(String msg, Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View layout = inflater.inflate(R.layout.toast,
+        View layout = inflater.inflate(layoutResid,
                 null);
         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
         TextView title = (TextView) layout.findViewById(R.id.text);
