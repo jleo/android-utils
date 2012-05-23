@@ -35,8 +35,8 @@ public abstract class PaginationLoaderAdapter extends AutoLoadArrayAdapter {
 
     PaginationLoaderService loader;
 
-    public PaginationLoaderAdapter(Activity activity, ListView listView, int layoutId, int progressDrawableResourceId, List items, int nodataview, PaginationLoaderService loader, View.OnClickListener noitemListener) {
-        super(activity, listView, layoutId, progressDrawableResourceId, items, nodataview, noitemListener);
+    public PaginationLoaderAdapter(Activity activity, ListView listView, int layoutId, int progressDrawableResourceId, List items, int nodataview, PaginationLoaderService loader, View.OnClickListener noitemListener, OnNothingLoaded onNothingLoadedListener) {
+        super(activity, listView, layoutId, progressDrawableResourceId, items, nodataview, noitemListener, onNothingLoadedListener);
         this.loader = loader;
     }
 

@@ -35,6 +35,9 @@ public class AlarmSender {
         title.setText(msg);
         if (toast == null)
             toast = new Toast(context);
+        else
+            toast.cancel();
+
         toast.setGravity(Gravity.CENTER, 0, 200);
         toast.setDuration(2000);
         toast.setView(layout);

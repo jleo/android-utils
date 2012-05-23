@@ -25,7 +25,14 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
     private static LayoutInflater inflater;
     ListView listView;
 
-    public AutoLoadArrayAdapter(Activity activity, ListView listView, int layoutId, int progressDrawableResourceId, List items, int nodataview, View.OnClickListener noitemListener) {
+    public int getActualItemCount(){
+        if(items == null)
+            return 0;
+
+        return items.size();
+    }
+
+    public AutoLoadArrayAdapter(Activity activity, ListView listView, int layoutId, int progressDrawableResourceId, List items, int nodataview, View.OnClickListener noitemListener, OnNothingLoaded onNothingLoadedListener) {
         super(activity, layoutId, items);
         this.items = items;
         this.layoutId = layoutId;
@@ -44,7 +51,7 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
             public List load() throws NoSuchPageException {
                 return AutoLoadArrayAdapter.this.load();
             }
-        }, this, listView);
+        }, this, listView, onNothingLoadedListener);
         listView.setOnScrollListener(autoLoadScrollListener);
         listView.setAdapter(this);
     }
@@ -65,9 +72,9 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
     private View progressView;
     private View nodataitem;
 
-    public void addItems(List detailInfos) {
-        if (detailInfos != null)
-            this.items.addAll(detailInfos);
+    public void addItems(List items) {
+        if (items != null)
+            this.items.addAll(items);
     }
 
     public void forceLoad(boolean showLoading) {
@@ -129,5 +136,9 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
 
     public void setNoMoreToLoad(boolean noMoreToLoad) {
         this.noMoreToLoad = noMoreToLoad;
+    }
+
+    public boolean isNoMoreToLoad() {
+        return this.noMoreToLoad;
     }
 }

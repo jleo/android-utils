@@ -1,6 +1,7 @@
 package com.srz.androidtools.autoloadlistview;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -21,9 +22,11 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
     private AutoLoadArrayAdapter adapter;
     Handler handler = new Handler();
     private ListView listView;
+    private OnNothingLoaded onNothingLoadedListener;
 
-    public AutoLoadScrollListener(OnLoadListener listener, AutoLoadArrayAdapter adapter, ListView listView) {
+    public AutoLoadScrollListener(OnLoadListener listener, AutoLoadArrayAdapter adapter, ListView listView, OnNothingLoaded nothingLoadedListener) {
         this.onLoadListener = listener;
+        this.onNothingLoadedListener = nothingLoadedListener;
         this.adapter = adapter;
         this.listView = listView;
 //        listView.setFastScrollEnabled(true);
@@ -53,14 +56,14 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         int first = view.getFirstVisiblePosition();
         int count = view.getChildCount();
+        Log.d("jleoo",scrollState+"");
         if (scrollState == SCROLL_STATE_IDLE || (first + count >= adapter.getCount())) {
-            if ((fireLoad || isLastItemVisible()) && !adapter.isLoadingData()) {
-                triggerHeavyUIOperation();
+            if ((fireLoad || isLastItemVisible()) && !adapter.isLoadingData() && !adapter.isNoMoreToLoad()) {
                 load(true);
+//                triggerHeavyUIOperation();
             } else {
                 fireLoad = false;
                 triggerHeavyUIOperation();
-
             }
         }
     }
@@ -102,6 +105,10 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
                     public void run() {
                         adapter.addItems(toAdd);
                         adapter.notifyDataSetChanged();
+                        if((toAdd==null || toAdd.size() == 0)&&adapter.getActualItemCount()==0){
+                            if(onNothingLoadedListener != null)
+                                onNothingLoadedListener.onNothingLoaded();
+                        }
                     }
                 });
                 handler.postDelayed(new Runnable() {
