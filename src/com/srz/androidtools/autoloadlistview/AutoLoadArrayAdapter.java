@@ -90,7 +90,7 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
         if (items != null) {
             size += items.size();
         }
-        if (items.size() >= 4)
+        if (items.size() >= 2)
             size += 1;
 
         if (items.size() == 0)

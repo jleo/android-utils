@@ -56,11 +56,10 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
     public void onScrollStateChanged(AbsListView view, int scrollState) {
         int first = view.getFirstVisiblePosition();
         int count = view.getChildCount();
-        Log.d("jleoo",scrollState+"");
+        Log.d("jleoo", scrollState + "");
         if (scrollState == SCROLL_STATE_IDLE || (first + count >= adapter.getCount())) {
             if ((fireLoad || isLastItemVisible()) && !adapter.isLoadingData() && !adapter.isNoMoreToLoad()) {
                 load(true);
-//                triggerHeavyUIOperation();
             } else {
                 fireLoad = false;
                 triggerHeavyUIOperation();
@@ -68,7 +67,7 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
         }
     }
 
-    public void triggerHeavyUIOperation() {
+    public synchronized void triggerHeavyUIOperation() {
         int first = listView.getFirstVisiblePosition();
         int count = listView.getChildCount();
         for (int i = 0; i < count; i++) {
@@ -105,8 +104,8 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
                     public void run() {
                         adapter.addItems(toAdd);
                         adapter.notifyDataSetChanged();
-                        if((toAdd==null || toAdd.size() == 0)&&adapter.getActualItemCount()==0){
-                            if(onNothingLoadedListener != null)
+                        if ((toAdd == null || toAdd.size() == 0) && adapter.getActualItemCount() == 0) {
+                            if (onNothingLoadedListener != null)
                                 onNothingLoadedListener.onNothingLoaded();
                         }
                     }
@@ -116,7 +115,7 @@ public class AutoLoadScrollListener implements AbsListView.OnScrollListener {
                     public void run() {
                         triggerHeavyUIOperation();
                     }
-                },100);
+                }, 300);
             }
         });
         thread.start();

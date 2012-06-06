@@ -6,6 +6,6 @@
           android:drawable="@color/verylightblue" />
     <item android:state_focused="false" android:state_pressed="true"
           android:drawable="@color/verylightblue" />
-    <item android:state_selected="true"  android:drawable="@color/verylightblue" />
-    <item android:state_focused="true" android:drawable="@color/verylightblue" />
+    <item android:state_selected="true"  android:drawable="@color/background_color" />
+    <item android:state_focused="true" android:drawable="@color/background_color" />
 </selector>
