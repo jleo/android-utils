@@ -8,7 +8,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,15 +21,15 @@ import java.util.List;
  * To change this template use FileType | Settings | FileType Templates.
  */
 public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements AdapterView.OnItemClickListener {
-    protected List<T> items;
+    protected List<Comparable> items;
     private AutoLoadScrollListener autoLoadScrollListener;
     private int layoutId;
     private boolean noMoreToLoad;
     private static LayoutInflater inflater;
     ListView listView;
 
-    public int getActualItemCount(){
-        if(items == null)
+    public int getActualItemCount() {
+        if (items == null)
             return 0;
 
         return items.size();
@@ -41,7 +44,7 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
         inflater = LayoutInflater.from(activity);
         this.progressView = inflater.inflate(progressDrawableResourceId,
                 listView, false);
-        if(nodataview!=-1)
+        if (nodataview != -1)
             setNoDataView(nodataview, noitemListener);
         //if (listView.getOnItemClickListener() == null)
         listView.setOnItemClickListener(this);
@@ -73,8 +76,17 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
     private View nodataitem;
 
     public void addItems(List items) {
-        if (items != null)
-            this.items.addAll(items);
+
+        if (items != null) {
+            Set itemSet = new HashSet();
+            itemSet.addAll(this.items);
+            itemSet.addAll(items);
+
+            this.items.clear();
+
+            this.items.addAll(itemSet);
+            Collections.sort(this.items);
+        }
     }
 
     public void forceLoad(boolean showLoading) {
@@ -87,6 +99,11 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
 
     public int getCount() {
         int size = 0;
+        if (items.size() == 1) {
+            if (items.get(0) instanceof String) {
+                return 0;
+            }
+        }
         if (items != null) {
             size += items.size();
         }
@@ -112,7 +129,7 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
         if (isLastItem(position)) {
             if (items.size() == 0 && isLoadingData)
                 return progressView;
-            if (nodataitem !=null && (items.size() == 0 || noMoreToLoad) && !isLoadingData)
+            if (nodataitem != null && (items.size() == 0 || noMoreToLoad) && !isLoadingData)
                 return nodataitem;
 
             return progressView;
@@ -121,10 +138,10 @@ public abstract class AutoLoadArrayAdapter<T> extends ArrayAdapter implements Ad
     }
 
     public View buildViewFromItem(int position, View convertView, ViewGroup parent) {
-        T di = items.get(position);
+        Comparable di = items.get(position);
 
         ItemView view = null;
-            view = (ItemView) inflater.inflate(layoutId, null);
+        view = (ItemView) inflater.inflate(layoutId, null);
         view.render(di);
         return view;
     }
